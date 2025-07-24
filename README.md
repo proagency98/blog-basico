@@ -182,10 +182,10 @@ Este proyecto está bajo la Licencia MIT.
 
 ## 👨‍💻 Autor
 
-**Tu Nombre**
-- LinkedIn: [Tu LinkedIn]
-- GitHub: [Tu GitHub]
-- Email: tu.email@ejemplo.com
+**Luis Flores**
+- LinkedIn: https://www.linkedin.com/in/lcfdev/
+- GitHub: https://github.com/proagency98
+- Email: proagency98@gmail.com
 
 ## 🙏 Agradecimientos
 
