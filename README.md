@@ -11,7 +11,6 @@ Un blog moderno y elegante construido con Django y Tailwind CSS, que permite a l
 - **🔄 Estados de Artículos**: Borradores y artículos publicados
 - **🔗 URLs Amigables**: Slugs únicos para SEO
 - **📄 Paginación**: Navegación eficiente entre artículos
-- **⚡ Performance**: Optimizado para velocidad
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -78,6 +77,12 @@ Un blog moderno y elegante construido con Django y Tailwind CSS, que permite a l
 blog_basico/
 ├── blog/                    # Aplicación principal
 │   ├── templates/          # Templates HTML
+│   │   └── blog/
+│   │       ├── base.html
+│   │       ├── article_list.html
+│   │       ├── article_detail.html
+│   │       ├── article_form.html
+│   │       └── article_confirm_delete.html
 │   ├── models.py          # Modelos de datos
 │   ├── views.py           # Vistas de la aplicación
 │   ├── urls.py            # Configuración de URLs
@@ -88,6 +93,7 @@ blog_basico/
 │   └── wsgi.py            # Configuración WSGI
 ├── manage.py              # Script de gestión Django
 ├── requirements.txt       # Dependencias del proyecto
+├── .gitignore            # Archivos a ignorar
 └── README.md             # Este archivo
 ```
 
@@ -115,36 +121,43 @@ El proyecto utiliza **Tailwind CSS** para un diseño moderno y responsive:
 - **Iconos**: Font Awesome para mejor UX
 - **Responsive**: Adaptable a móviles, tablets y desktop
 
-## 🔧 Configuración
+## 🔧 Configuración Actual
 
-### Variables de Entorno
+El proyecto está configurado para desarrollo local con:
 
-Crea un archivo `.env` en la raíz del proyecto:
-
-```env
-DEBUG=True
-SECRET_KEY=tu-clave-secreta-aqui
-DATABASE_URL=sqlite:///db.sqlite3
-```
-
-### Configuración de Base de Datos
-
-El proyecto viene configurado con SQLite por defecto. Para usar PostgreSQL o MySQL, modifica `settings.py`:
-
-```python
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nombre_db',
-        'USER': 'usuario',
-        'PASSWORD': 'contraseña',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-```
+- **Base de datos**: SQLite (archivo local)
+- **Debug**: Habilitado para desarrollo
+- **Secret Key**: Configurada en settings.py
+- **Hosts permitidos**: Solo localhost
 
 ## 🚀 Despliegue
+
+### Para Producción
+
+1. **Cambiar configuración en settings.py**:
+   ```python
+   DEBUG = False
+   ALLOWED_HOSTS = ['tu-dominio.com', 'www.tu-dominio.com']
+   ```
+
+2. **Configurar base de datos de producción** (PostgreSQL recomendado):
+   ```python
+   DATABASES = {
+       'default': {
+           'ENGINE': 'django.db.backends.postgresql',
+           'NAME': 'nombre_db',
+           'USER': 'usuario',
+           'PASSWORD': 'contraseña',
+           'HOST': 'localhost',
+           'PORT': '5432',
+       }
+   }
+   ```
+
+3. **Instalar dependencias de producción**:
+   ```bash
+   pip install gunicorn whitenoise
+   ```
 
 ### Heroku
 
@@ -153,18 +166,7 @@ DATABASES = {
    web: gunicorn blog_basico.wsgi
    ```
 
-2. Instalar gunicorn:
-   ```bash
-   pip install gunicorn
-   ```
-
-3. Configurar variables de entorno en Heroku
-
-### VPS/DigitalOcean
-
-1. Configurar servidor web (Nginx)
-2. Configurar WSGI (Gunicorn)
-3. Configurar SSL con Let's Encrypt
+2. Configurar variables de entorno en Heroku
 
 ## 🤝 Contribuir
 
@@ -176,7 +178,7 @@ DATABASES = {
 
 ## 📝 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia MIT.
 
 ## 👨‍💻 Autor
 
