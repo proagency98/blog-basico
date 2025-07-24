@@ -1,0 +1,89 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ article.title }} - Blog{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Back Button -->
+    <div class="mb-6">
+        <a href="{% url 'blog:article_list' %}" class="inline-flex items-center text-gray-600 hover:text-primary transition-colors">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Volver a Artículos
+        </a>
+    </div>
+
+    <!-- Article Content -->
+    <article class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-8">
+            <!-- Article Header -->
+            <header class="mb-8">
+                <h1 class="text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                    {{ article.title }}
+                </h1>
+                
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div class="flex items-center space-x-6 text-sm text-gray-600">
+                        <div class="flex items-center">
+                            <i class="fas fa-user mr-2 text-primary"></i>
+                            <span class="font-medium">{{ article.author }}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar mr-2 text-primary"></i>
+                            {{ article.created_at|date:"d/m/Y" }}
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock mr-2 text-primary"></i>
+                            {{ article.created_at|date:"H:i" }}
+                        </div>
+                    </div>
+                    
+                    {% if article.is_published %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        <i class="fas fa-check mr-1"></i>Publicado
+                    </span>
+                    {% else %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800">
+                        <i class="fas fa-clock mr-1"></i>Borrador
+                    </span>
+                    {% endif %}
+                </div>
+            </header>
+
+            <!-- Article Body -->
+            <div class="prose prose-lg max-w-none">
+                <div class="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                    {{ article.content }}
+                </div>
+            </div>
+
+            <!-- Article Footer -->
+            <footer class="mt-8 pt-6 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-500">
+                        <span>Última actualización: {{ article.updated_at|date:"d/m/Y H:i" }}</span>
+                    </div>
+                    
+                    {% if user == article.author %}
+                    <div class="flex items-center space-x-3">
+                        <a href="{% url 'blog:article_update' article.slug %}" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+                            <i class="fas fa-edit mr-2"></i>Editar
+                        </a>
+                        <a href="{% url 'blog:article_delete' article.slug %}" class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors">
+                            <i class="fas fa-trash mr-2"></i>Eliminar
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </footer>
+        </div>
+    </article>
+
+    <!-- Related Actions -->
+    <div class="mt-8 flex justify-center">
+        <a href="{% url 'blog:article_list' %}" class="inline-flex items-center px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors">
+            <i class="fas fa-list mr-2"></i>
+            Ver Todos los Artículos
+        </a>
+    </div>
+</div>
+{% endblock %} 

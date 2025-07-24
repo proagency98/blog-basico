@@ -1,0 +1,188 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        Editar Artículo - Blog
+    {% else %}
+        Crear Artículo - Blog
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <div class="flex items-center mb-4">
+            <a href="{% url 'blog:article_list' %}" class="inline-flex items-center text-gray-600 hover:text-primary transition-colors mr-4">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Volver
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900">
+                {% if form.instance.pk %}
+                    <i class="fas fa-edit mr-2 text-primary"></i>Editar Artículo
+                {% else %}
+                    <i class="fas fa-plus mr-2 text-primary"></i>Crear Nuevo Artículo
+                {% endif %}
+            </h1>
+        </div>
+        <p class="text-gray-600">
+            {% if form.instance.pk %}
+                Modifica el contenido de tu artículo
+            {% else %}
+                Comparte tus ideas con el mundo
+            {% endif %}
+        </p>
+    </div>
+
+    <!-- Form -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <form method="post" class="p-8">
+            {% csrf_token %}
+            
+            <!-- Title Field -->
+            <div class="mb-6">
+                <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-heading mr-1 text-primary"></i>Título
+                </label>
+                <input type="text" 
+                       name="{{ form.title.name }}" 
+                       id="{{ form.title.id_for_label }}" 
+                       value="{{ form.title.value|default:'' }}"
+                       class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 bg-white text-gray-900 placeholder-gray-500 hover:border-gray-400"
+                       placeholder="Escribe el título de tu artículo">
+                {% if form.title.errors %}
+                <div class="mt-2 text-sm text-red-600">
+                    {% for error in form.title.errors %}
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-1"></i>
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <p class="mt-1 text-sm text-gray-500">Escribe un título atractivo para tu artículo</p>
+            </div>
+            
+            <!-- Content Field -->
+            <div class="mb-6">
+                <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                    <i class="fas fa-align-left mr-1 text-primary"></i>Contenido
+                </label>
+                <textarea name="{{ form.content.name }}" 
+                          id="{{ form.content.id_for_label }}" 
+                          rows="12"
+                          class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-200 bg-white text-gray-900 placeholder-gray-500 hover:border-gray-400 resize-y"
+                          placeholder="Escribe el contenido de tu artículo aquí...">{{ form.content.value|default:'' }}</textarea>
+                {% if form.content.errors %}
+                <div class="mt-2 text-sm text-red-600">
+                    {% for error in form.content.errors %}
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-1"></i>
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <p class="mt-1 text-sm text-gray-500">Escribe el contenido de tu artículo</p>
+            </div>
+            
+            <!-- Published Field -->
+            <div class="mb-8">
+                <div class="flex items-center">
+                    <input type="checkbox" 
+                           name="{{ form.is_published.name }}" 
+                           id="{{ form.is_published.id_for_label }}"
+                           {% if form.is_published.value %}checked{% endif %}
+                           class="h-5 w-5 text-primary focus:ring-primary border-2 border-gray-300 rounded transition-colors">
+                    <label for="{{ form.is_published.id_for_label }}" class="ml-3 text-sm font-medium text-gray-700">
+                        <i class="fas fa-globe mr-1 text-primary"></i>Publicar inmediatamente
+                    </label>
+                </div>
+                {% if form.is_published.errors %}
+                <div class="mt-2 text-sm text-red-600">
+                    {% for error in form.is_published.errors %}
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-1"></i>
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <p class="mt-1 text-sm text-gray-500">Si no lo marcas, el artículo se guardará como borrador</p>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="flex items-center justify-between pt-6 border-t border-gray-200">
+                <a href="{% url 'blog:article_list' %}" class="inline-flex items-center px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 font-medium rounded-lg transition-colors">
+                    <i class="fas fa-times mr-2"></i>Cancelar
+                </a>
+                
+                <button type="submit" class="inline-flex items-center px-6 py-2 bg-primary hover:bg-blue-600 text-white font-medium rounded-lg transition-colors">
+                    {% if form.instance.pk %}
+                        <i class="fas fa-save mr-2"></i>Actualizar Artículo
+                    {% else %}
+                        <i class="fas fa-paper-plane mr-2"></i>Crear Artículo
+                    {% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tips -->
+    <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 class="text-lg font-medium text-blue-900 mb-3">
+            <i class="fas fa-lightbulb mr-2"></i>Consejos para escribir
+        </h3>
+        <ul class="text-sm text-blue-800 space-y-2">
+            <li class="flex items-start">
+                <i class="fas fa-check mr-2 mt-0.5 text-blue-600"></i>
+                Escribe un título claro y descriptivo
+            </li>
+            <li class="flex items-start">
+                <i class="fas fa-check mr-2 mt-0.5 text-blue-600"></i>
+                Organiza tu contenido en párrafos
+            </li>
+            <li class="flex items-start">
+                <i class="fas fa-check mr-2 mt-0.5 text-blue-600"></i>
+                Revisa tu ortografía antes de publicar
+            </li>
+            <li class="flex items-start">
+                <i class="fas fa-check mr-2 mt-0.5 text-blue-600"></i>
+                Puedes guardar como borrador y publicar después
+            </li>
+        </ul>
+    </div>
+</div>
+
+<style>
+/* Estilos adicionales para mejorar la experiencia */
+input[type="text"]:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+input[type="text"]:hover,
+textarea:hover {
+    border-color: #9CA3AF;
+}
+
+/* Estilo para campos con error */
+input[type="text"].error,
+textarea.error {
+    border-color: #EF4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Estilo para checkbox */
+input[type="checkbox"]:checked {
+    background-color: #3B82F6;
+    border-color: #3B82F6;
+}
+
+input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+</style>
+{% endblock %}
